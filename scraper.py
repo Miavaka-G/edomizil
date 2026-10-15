@@ -187,8 +187,10 @@ class EdomizilScraper(object):
             self.driver = uc.Chrome(options=self.options_chrome(), version_main=144)
         
         # Configuration de la taille de la fenêtre (votre code)
-        self.driver.set_window_size(1920, 1080)
-        # Recommandé : ajouter un timeout global pour éviter que get() ne bloque indéfiniment
+        try:
+            self.driver.set_window_size(1920, 1080)
+        except Exception as e:
+            print(f"   ==> set_window_size ignoré : {e}")
         self.driver.set_page_load_timeout(30)
 
     def goto_page(self, url:str, date:str) -> str:
