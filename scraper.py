@@ -77,7 +77,7 @@ class EdomizilScraper(object):
         chrome_options.add_argument('--disable-blink-features=AutomationControlled')
         chrome_options.add_argument('--disable-search-engine-choice-screen')
         # self.chrome_options.add_argument('--incognito') #15 10 2026
-        chrome_options.add_extension(f"{os.environ.get('EXTENSION_PATH')}")
+        # chrome_options.add_extension(f"{os.environ.get('EXTENSION_PATH')}")
         #Argument à utiliser surtout en multi instance pour éviter des crash de chrome 13 07 2026
         chrome_options.add_argument("--disable-dev-shm-usage")
         #ajout 28 07 2026
