@@ -184,7 +184,7 @@ class EdomizilScraper(object):
             print(f"   ==> Échec initial du lancement de Chrome ({e}). Nouvelle tentative dans 15 secondes...")
             time.sleep(1) 
             # self.driver = webdriver.Chrome(options=self.chrome_options)
-            self.driver = uc.Chrome(options=self.options_chrome(), version_main=144)
+            self.driver = uc.Chrome(options=self.options_chrome(), version_main=144, browser_executable_path="/usr/bin/google-chrome")
         
         # Configuration de la taille de la fenêtre (votre code)
         try:
