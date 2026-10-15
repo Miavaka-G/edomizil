@@ -68,7 +68,7 @@ class EdomizilScraper(object):
         # # self.firefox_options.add_argument('--incognito')
         # # self.chrome_options.add_argument('--headless')
 
-        self.use_new_driver()
+        # self.use_new_driver() mis dans le go to
 
     def options_chrome(self,):
         # self.chrome_options = webdriver.ChromeOptions() 15 10 2026
@@ -192,8 +192,8 @@ class EdomizilScraper(object):
         self.driver.set_page_load_timeout(30)
 
     def goto_page(self, url:str, date:str) -> str:
-        self.clear_cache()
-
+        self.use_new_driver()
+        
         if self.cycle_count >= self.max_cycle:
             print('   ==> max cycle reached')
             self.use_new_driver()
@@ -287,14 +287,15 @@ class EdomizilScraper(object):
                 raise e
         self.cycle_count += 1
 
-    #effacement cache en cours d'exécution
+    #effacer cache en cours d'exécution
     def clear_cache(self,) -> None:
         try:
             self.driver.execute_cdp_cmd("Network.clearBrowserCache", {})
             print("Le cache de Chrome a été vidé avec succès.")
         except Exception as e:
-            input(f"Erreur lors de la tentative de vidage du cache : {e}")
-        time.sleep(uniform(1.1, 1.8))  # Pause aléatoire pour simuler un comportement humain
+            print(f"Erreur lors de la tentative de vidage du cache : {e}")
+            pass
+        time.sleep(uniform(0.5, 0.9))  # Pause aléatoire pour simuler un comportement humain
         
 
     def soupify(self, element:str) -> object:
@@ -421,6 +422,8 @@ class EdomizilScraper(object):
 
         print(data)
         self.data.append(data)
+
+        self.clear_cache()
 
     def save_data(self) -> None:
         print('    =>  saving data')
