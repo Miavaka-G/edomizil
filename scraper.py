@@ -16,6 +16,8 @@ import sys
 import time
 import csv
 
+import undetected_chromedriver as uc #15 10 2026
+
 load_dotenv()
 
 
@@ -40,33 +42,62 @@ class EdomizilScraper(object):
         self.base_config = os.environ.get("CONFIG_FOLDER_PATH")
         self.base_dests = os.environ.get("DESTS_FOLDER_PATH")
 
-        self.chrome_options = webdriver.ChromeOptions()
-        self.chrome_options.add_argument('--disable-gpu')
-        self.chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-        self.chrome_options.add_argument('--disable-search-engine-choice-screen')
+        # self.chrome_options = webdriver.ChromeOptions()
+        # self.chrome_options.add_argument('--disable-gpu')
+        # self.chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+        # self.chrome_options.add_argument('--disable-search-engine-choice-screen')
+        # # self.chrome_options.add_argument('--incognito') #15 10 2026
+        # self.chrome_options.add_extension(f"{os.environ.get('EXTENSION_PATH')}")
+        # #Argument à utiliser surtout en multi instance pour éviter des crash de chrome 13 07 2026
+        # self.chrome_options.add_argument("--disable-dev-shm-usage")
+        # #ajout 28 07 2026
+        # # self.chrome_options.add_argument('--disable-infobars')
+        # # self.chrome_options.add_argument('--no-sandbox')
+        # # self.chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
+        # self.chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        # self.chrome_options.add_experimental_option('useAutomationExtension', False)
+        # #fin 21 07 2026
+        # # self.chrome_options.add_argument('--headless')
+        # #24 09 2026 : alléger sans image
+        # # self.chrome_options.add_argument('--blink-settings=imagesEnabled=false') un vrai navigateur charge les images (risque cloudfare si utilsé)
+        # self.chrome_options.add_argument('--disk-cache-size=1')
+        # self.chrome_options.add_argument('--media-cache-size=1')
+
+        # self.firefox_options = webdriver.FirefoxOptions()
+        # self.firefox_options.add_argument('--disable-gpu')
+        # # self.firefox_options.add_argument('--incognito')
+        # # self.chrome_options.add_argument('--headless')
+
+        self.use_new_driver()
+
+    def options_chrome(self,):
+        # self.chrome_options = webdriver.ChromeOptions() 15 10 2026
+        chrome_options = uc.ChromeOptions()
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+        chrome_options.add_argument('--disable-search-engine-choice-screen')
         # self.chrome_options.add_argument('--incognito') #15 10 2026
-        self.chrome_options.add_extension(f"{os.environ.get('EXTENSION_PATH')}")
+        chrome_options.add_extension(f"{os.environ.get('EXTENSION_PATH')}")
         #Argument à utiliser surtout en multi instance pour éviter des crash de chrome 13 07 2026
-        self.chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-dev-shm-usage")
         #ajout 28 07 2026
         # self.chrome_options.add_argument('--disable-infobars')
         # self.chrome_options.add_argument('--no-sandbox')
         # self.chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
-        self.chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        self.chrome_options.add_experimental_option('useAutomationExtension', False)
+        # chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"]) uc gère ça nativement
+        # chrome_options.add_experimental_option('useAutomationExtension', False) uc gère ça nativement
         #fin 21 07 2026
         # self.chrome_options.add_argument('--headless')
         #24 09 2026 : alléger sans image
         # self.chrome_options.add_argument('--blink-settings=imagesEnabled=false') un vrai navigateur charge les images (risque cloudfare si utilsé)
-        self.chrome_options.add_argument('--disk-cache-size=1')
-        self.chrome_options.add_argument('--media-cache-size=1')
+        chrome_options.add_argument('--disk-cache-size=1')
+        chrome_options.add_argument('--media-cache-size=1')
 
         self.firefox_options = webdriver.FirefoxOptions()
         self.firefox_options.add_argument('--disable-gpu')
         # self.firefox_options.add_argument('--incognito')
         # self.chrome_options.add_argument('--headless')
-
-        self.use_new_driver()
+        return chrome_options
 
     def normalize_url(self, url:str, date:str) -> str:
         url_params = list(parse_qs(urlparse(url).query).keys())
@@ -147,11 +178,13 @@ class EdomizilScraper(object):
 
         print("   ==> Initialisation de la nouvelle fenêtre Chrome...")
         try:
-            self.driver = webdriver.Chrome(options=self.chrome_options)
+            # self.driver = webdriver.Chrome(options=self.chrome_options)
+            self.driver = uc.Chrome(options=self.options_chrome())
         except Exception as e:
             print(f"   ==> Échec initial du lancement de Chrome ({e}). Nouvelle tentative dans 15 secondes...")
             time.sleep(1) 
-            self.driver = webdriver.Chrome(options=self.chrome_options)
+            # self.driver = webdriver.Chrome(options=self.chrome_options)
+            self.driver = uc.Chrome(options=self.options_chrome())
         
         # Configuration de la taille de la fenêtre (votre code)
         self.driver.set_window_size(1920, 1080)
