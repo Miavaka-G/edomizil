@@ -44,28 +44,27 @@ class EdomizilScraper(object):
         self.chrome_options.add_argument('--disable-gpu')
         self.chrome_options.add_argument('--disable-blink-features=AutomationControlled')
         self.chrome_options.add_argument('--disable-search-engine-choice-screen')
-        # self.chrome_options.add_argument('--incognito')
+        # self.chrome_options.add_argument('--incognito') #15 10 2026
         self.chrome_options.add_extension(f"{os.environ.get('EXTENSION_PATH')}")
         #Argument à utiliser surtout en multi instance pour éviter des crash de chrome 13 07 2026
         self.chrome_options.add_argument("--disable-dev-shm-usage")
         #ajout 28 07 2026
         # self.chrome_options.add_argument('--disable-infobars')
         # self.chrome_options.add_argument('--no-sandbox')
-        self.chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
+        # self.chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
         self.chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         self.chrome_options.add_experimental_option('useAutomationExtension', False)
         #fin 21 07 2026
         # self.chrome_options.add_argument('--headless')
+        #24 09 2026 : alléger sans image
+        # self.chrome_options.add_argument('--blink-settings=imagesEnabled=false') un vrai navigateur charge les images (risque cloudfare si utilsé)
+        self.chrome_options.add_argument('--disk-cache-size=1')
+        self.chrome_options.add_argument('--media-cache-size=1')
 
         self.firefox_options = webdriver.FirefoxOptions()
         self.firefox_options.add_argument('--disable-gpu')
-        self.firefox_options.add_argument('--incognito')
+        # self.firefox_options.add_argument('--incognito')
         # self.chrome_options.add_argument('--headless')
-
-        #24 09 2026 : alléger sans image
-        self.chrome_options.add_argument('--blink-settings=imagesEnabled=false')
-        self.chrome_options.add_argument('--disk-cache-size=1')
-        self.chrome_options.add_argument('--media-cache-size=1')
 
         self.use_new_driver()
 
