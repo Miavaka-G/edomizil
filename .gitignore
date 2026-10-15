@@ -1,0 +1,11 @@
+.env
+logs/
+results/
+bin/
+__pycache__/
+dests/
+docs/
+.env_local
+__init__.py
+static/
+canvas_blocker_0_2_0_0.crx
