@@ -196,12 +196,16 @@ class EdomizilScraper(object):
         self.driver.set_page_load_timeout(30)
 
     def goto_page(self, url:str, date:str) -> str:
-        self.use_new_driver()
-        
         if self.cycle_count >= self.max_cycle:
-            print('   ==> max cycle reached')
+            print('     ')
+            print(f'   ==> Meme driver utilisé {self.cycle_count} / {self.max_cycle} , CHANGEMENT DE DRIVER')
+            print('     ')
             self.use_new_driver()
             self.cycle_count = 0
+        elif self.cycle_count < self.max_cycle:
+            print('     ')
+            print(f'   ==> Meme driver utilisé {self.cycle_count} / {self.max_cycle} ')
+            print('     ')
         try:
             normalized_url = self.normalize_url(url, date)
             print(f"    => {normalized_url}")
@@ -448,6 +452,7 @@ class EdomizilScraper(object):
     def start(self) -> None:
         self.create_files()
         self.load_configs()
+        self.use_new_driver()
         for k in range(self.history['last_dest'], len(self.destinations)):
             print(f" ==> {k + 1} / {len(self.destinations)} destinations")
             dates = pd.bdate_range(
@@ -474,6 +479,4 @@ class EdomizilScraper(object):
                 time.sleep(uniform(1.9, 2.6)) #24 09 2026
                 new_index = k + 1 
                 self.set_history('last_dest', new_index)
-
-                self.clear_cache()
         print('scrap finished !')
