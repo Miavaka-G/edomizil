@@ -470,13 +470,13 @@ class EdomizilScraper(object):
                     print("         ")
                     print("next url now")
                     print("         ")
-                    time.sleep(uniform(3.1, 5.2)) #ajouté 12 10 2026 par demande de Nicolas mettre encore un peu plus de temps
+                    time.sleep(uniform(2.1, 2.9))
                     break
                 if self.page_info_is_valid():
                     self.extract_data()
                     self.save_data()
                 print('---- sleeping quelques seconds before next week ---- ')
-                time.sleep(uniform(1.9, 2.6)) #24 09 2026
+                time.sleep(uniform(2.8, 4.9)) #16 10 2026
                 new_index = k + 1 
                 self.set_history('last_dest', new_index)
         print('scrap finished !')
