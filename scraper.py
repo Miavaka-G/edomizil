@@ -196,7 +196,7 @@ class EdomizilScraper(object):
         self.driver.set_page_load_timeout(30)
 
     def goto_page(self, url:str, date:str) -> str:
-        if self.cycle_count >= self.max_cycle:
+        if self.cycle_count > self.max_cycle:
             print('     ')
             print(f'   ==> Meme driver utilisé {self.cycle_count} / {self.max_cycle} , CHANGEMENT DE DRIVER')
             print('     ')
