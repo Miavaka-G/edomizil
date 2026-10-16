@@ -33,7 +33,7 @@ class EdomizilScraper(object):
         self.date_start = datetime.strptime(date_start, '%d/%m/%Y').strftime('%Y-%m-%d')
         self.date_end = datetime.strptime(date_end, '%d/%m/%Y').strftime('%Y-%m-%d')
         self.week_scrap = datetime.strptime(date_start, "%d/%m/%Y").strftime("%d_%m_%Y")
-        self.cycle_count = 0
+        self.cycle_count = 1
         self.max_cycle = 30
 
         self.base_log = os.environ.get("LOG_FOLDER_PATH")
