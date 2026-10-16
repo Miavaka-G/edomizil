@@ -71,8 +71,8 @@ class EdomizilScraper(object):
         # self.use_new_driver() mis dans le go to
 
     def options_chrome(self,):
-        # self.chrome_options = webdriver.ChromeOptions() 15 10 2026
-        chrome_options = uc.ChromeOptions()
+        chrome_options = webdriver.ChromeOptions() 
+        # chrome_options = uc.ChromeOptions()
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--disable-blink-features=AutomationControlled')
         chrome_options.add_argument('--disable-search-engine-choice-screen')
@@ -84,14 +84,16 @@ class EdomizilScraper(object):
         # self.chrome_options.add_argument('--disable-infobars')
         # self.chrome_options.add_argument('--no-sandbox')
         # self.chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
-        # chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"]) uc gère ça nativement
-        # chrome_options.add_experimental_option('useAutomationExtension', False) uc gère ça nativement
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"]) 
+        chrome_options.add_experimental_option('useAutomationExtension', False) 
         #fin 21 07 2026
         # self.chrome_options.add_argument('--headless')
         #24 09 2026 : alléger sans image
         # self.chrome_options.add_argument('--blink-settings=imagesEnabled=false') un vrai navigateur charge les images (risque cloudfare si utilsé)
         chrome_options.add_argument('--disk-cache-size=1')
         chrome_options.add_argument('--media-cache-size=1')
+        chrome_options.add_argument('--window-size=1920,1080')
+        chrome_options.binary_location="/usr/bin/google-chrome" #dans le .18 il y a deux chrome, un 144 et un chromium 153 , on utilise le 144
 
         self.firefox_options = webdriver.FirefoxOptions()
         self.firefox_options.add_argument('--disable-gpu')
@@ -178,13 +180,13 @@ class EdomizilScraper(object):
 
         print("   ==> Initialisation de la nouvelle fenêtre Chrome...")
         try:
-            # self.driver = webdriver.Chrome(options=self.chrome_options)
-            self.driver = uc.Chrome(options=self.options_chrome(), version_main=144) #144 version chrome du .18
+            self.driver = webdriver.Chrome(options=self.options_chrome())
+            # self.driver = uc.Chrome(options=self.options_chrome(), version_main=144) #144 version chrome du .18
         except Exception as e:
             print(f"   ==> Échec initial du lancement de Chrome ({e}). Nouvelle tentative dans 15 secondes...")
             time.sleep(1) 
-            # self.driver = webdriver.Chrome(options=self.chrome_options)
-            self.driver = uc.Chrome(options=self.options_chrome(), version_main=144, browser_executable_path="/usr/bin/google-chrome")
+            self.driver = webdriver.Chrome(options=self.options_chrome())
+            # self.driver = uc.Chrome(options=self.options_chrome(), version_main=144, browser_executable_path="/usr/bin/google-chrome")
         
         # Configuration de la taille de la fenêtre (votre code)
         try:
