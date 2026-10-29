@@ -373,7 +373,11 @@ class EdomizilScraper(object):
                             print('----- 5eme nouvelle affichage selector for typology')
                             typologie = soupe.find('span', {'class':"block cols>m4 text-large"}).text.strip()
                         except:
-                            input('typology not found, check selector in navigator')
+                            try:
+                                print('----- 6 eme nouveau selecteur typology 29 10 2026 --- ')
+                                typologie = soupe.find('span', {'class' : 'block space-x-4 text-large'}).text.strip()
+                            except:
+                                input('typology not found, check selector in navigator')
         # input('pause')
         #selecteur ancien affichage de nom:
         try:
